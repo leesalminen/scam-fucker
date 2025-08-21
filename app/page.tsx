@@ -1,13 +1,13 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback, Suspense } from 'react';
+import { useState, useEffect, useRef, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 
 function KYCForm() {
   const searchParams = useSearchParams();
   const [step, setStep] = useState(0);
-  const [formData, setFormData] = useState<any>({});
-  const [errors, setErrors] = useState<any>({});
+  const [formData, setFormData] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
   const [countdown, setCountdown] = useState(0);
   const [mouseMovements, setMouseMovements] = useState(0);
@@ -17,13 +17,11 @@ function KYCForm() {
   const [sessionTimeout, setSessionTimeout] = useState(600);
   const [showPermissionModal, setShowPermissionModal] = useState(false);
   const [permissionType, setPermissionType] = useState('');
-  const [verificationCode, setVerificationCode] = useState('');
   const [uploadProgress, setUploadProgress] = useState(0);
   const [captchaInput, setCaptchaInput] = useState('');
   const [currentCaptcha, setCurrentCaptcha] = useState('');
   const [showChat, setShowChat] = useState(false);
   const [twoFACode, setTwoFACode] = useState('');
-  const [videoVerificationStatus, setVideoVerificationStatus] = useState('');
   const lastActivityRef = useRef(Date.now());
   const countdownIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -32,8 +30,8 @@ function KYCForm() {
     if (encoded) {
       try {
         const decoded = JSON.parse(atob(encoded));
-        setFormData((prev: any) => ({ ...prev, ...decoded }));
-      } catch (e) {
+        setFormData((prev) => ({ ...prev, ...decoded }));
+      } catch {
         console.log('Invalid data parameter');
       }
     }
@@ -118,7 +116,7 @@ function KYCForm() {
       if (Math.random() < 0.05 && Object.keys(formData).length > 3) {
         const keys = Object.keys(formData);
         const randomKey = keys[Math.floor(Math.random() * keys.length)];
-        setFormData((prev: any) => {
+        setFormData((prev) => {
           const newData = { ...prev };
           delete newData[randomKey];
           return newData;
@@ -162,15 +160,15 @@ function KYCForm() {
       value = value + randomChar;
     }
 
-    setFormData((prev: any) => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({ ...prev, [field]: value }));
     
     // Clear any existing error for this field when they type (gives false confidence)
-    setErrors((prev: any) => ({ ...prev, [field]: '' }));
+    setErrors((prev) => ({ ...prev, [field]: '' }));
 
     // Random field clearing - happens after they think they're done
     if (Math.random() < 0.02) {
       setTimeout(() => {
-        setFormData((prev: any) => ({ ...prev, [field]: '' }));
+        setFormData((prev) => ({ ...prev, [field]: '' }));
         alert(`⚠️ Security scan detected unusual activity. Please re-enter ${field.replace(/_/g, ' ')}.`);
       }, 2000);
     }
@@ -492,7 +490,7 @@ function KYCForm() {
     
     await new Promise(resolve => setTimeout(resolve, delay));
 
-    const newErrors: any = {};
+    const newErrors: Record<string, string> = {};
     
     // First do strict validation on current step fields
     const requiredFields: { [key: number]: string[] } = {
