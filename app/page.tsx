@@ -1469,19 +1469,20 @@ function KYCForm() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
-      <header className="bg-white shadow-sm border-b">
+      <header className="bg-black shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <div className="text-3xl">₿</div>
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900">Bull Bitcoin</h1>
-                <p className="text-xs text-gray-500">Enhanced KYC Verification Portal</p>
-              </div>
+              <img
+                src="/bull-bitcoin-banner-logo.png"
+                alt="Bull Bitcoin Logo"
+                className="h-12 w-auto"
+              />
+              
             </div>
             <div className="text-right">
-              <p className="text-sm text-gray-600">Session expires in: <span className="font-mono font-bold text-red-600">{formatTime(sessionTimeout)}</span></p>
-              <p className="text-xs text-gray-500">Queue position: #{queuePosition}</p>
+              <p className="text-sm text-white">Session expires in: <span className="font-mono font-bold text-red-600">{formatTime(sessionTimeout)}</span></p>
+              <p className="text-xs text-white">Queue position: #{queuePosition}</p>
             </div>
           </div>
         </div>
